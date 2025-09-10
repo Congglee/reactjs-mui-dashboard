@@ -1,0 +1,85 @@
+---
+alwaysApply: true
+description: Strict Material‑UI v7 UI policy; MUI‑only, tree‑shaking imports, icons, theming, MCP.
+---
+
+# Material‑UI v7 UI Policy (REQUIRED)
+
+These rules apply to all React/TypeScript files in this project. The Cursor Agent must strictly follow them when building the UI.
+
+## Version and documentation
+
+- This project uses Material‑UI v7. Reference: [Upgrade to v7](https://mui.com/material-ui/migration/upgrade-to-v7/).
+- Use the MUI MCP Server whenever help is needed: [Getting started with MCP](https://mui.com/material-ui/getting-started/mcp/).
+
+## UI library usage
+
+- The entire UI (components, icons, theme, spacing, typography, etc.) must use Material‑UI only.
+- Do not add or use any third‑party UI libraries.
+
+## Imports (Tree‑shaking) — Required
+
+- Always import specific components/icons to optimize bundle size. Correct examples:
+
+```tsx
+import Stack from '@mui/material/Stack'
+import Button from '@mui/material/Button'
+import DeleteIcon from '@mui/icons-material/Delete'
+import AlarmIcon from '@mui/icons-material/Alarm'
+```
+
+- Do not use deep imports beyond one level (wrong: `@mui/material/styles/createTheme`).
+- Do not use modern/esm aliases removed in v7 (e.g., `@mui/material/modern`), or Vite aliases that force ESM for icons.
+- Import theming APIs only from `@mui/material/styles`, e.g.:
+
+```tsx
+import { ThemeProvider, createTheme } from '@mui/material/styles'
+```
+
+## Icon rules
+
+- Prefer icons from `@mui/icons-material`.
+- Only if no suitable icon exists, create a custom icon using `SvgIcon` and ensure it inherits MUI color/size/theme props:
+
+```tsx
+import SvgIcon from '@mui/material/SvgIcon'
+
+function CustomIcon(props) {
+  return (
+    <SvgIcon {...props} viewBox='0 0 24 24'>
+      <path d='M...' />
+    </SvgIcon>
+  )
+}
+```
+
+## Theming and styling
+
+- Standardize theming via Material‑UI: use `ThemeProvider`, `createTheme`, `sx`, `styled`, `useTheme`, and system props.
+- Prefer the `sx` prop for all component‑level styling. Use `styled` only to create global, reusable components shared across multiple pages/routes. This keeps the codebase consistent, maintainable, and leverages MUI optimizations.
+- Do not use `experimentalStyled` (removed in v7). Use `styled` from `@mui/material/styles`.
+- When multiple color schemes are enabled, prefer CSS variables via `theme.vars.*`. If runtime light/dark calculations are needed, apply `theme.applyStyles` accordingly.
+- Import `StyledEngineProvider` from `@mui/material/styles` (do not import from `@mui/material`).
+
+## React 18 and below compatibility
+
+- If the project uses React 18 or below, align `react-is` with the React version to avoid runtime issues (see the v7 guide).
+
+## Mandatory MCP usage for MUI issues
+
+- For any MUI‑related question, migration, API uncertainty, or error, proactively use the MUI MCP Server to search, debug, or resolve before asking the user.
+
+## Do / Don’t checklist
+
+- Do: Tree‑shake imports from `@mui/material/<Component>` and `@mui/icons-material/<Icon>`.
+- Do: Use `@mui/material/styles` for theming and type augmentation.
+- Don’t: Deep import nested paths within MUI packages.
+- Don’t: Add or use any non‑MUI UI libraries.
+- Don’t: Import `StyledEngineProvider` from `@mui/material`.
+
+---
+
+References:
+
+- MUI v7 Upgrade Guide: https://mui.com/material-ui/migration/upgrade-to-v7/
+- MUI MCP Server: https://mui.com/material-ui/getting-started/mcp/
