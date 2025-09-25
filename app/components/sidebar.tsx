@@ -1,4 +1,7 @@
-import NavItem from '@/components/dashboard/nav-item'
+import NavItem from '@/components/nav-item'
+import { SIDEBAR_WIDTH } from '@/theme'
+import { alpha, useTheme } from '@mui/material/styles'
+import { useAppContext } from '@/providers/app-provider'
 import AnalyticsIcon from '@/components/icons/analytics-icon'
 import HelpIcon from '@/components/icons/help-icon'
 import HomeIcon from '@/components/icons/home-icon'
@@ -13,29 +16,72 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome'
 import Avatar from '@mui/material/Avatar'
 import IconButton from '@mui/material/IconButton'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
+import Drawer from '@mui/material/Drawer'
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 interface SidebarProps {
   width?: number
 }
 
-export default function Sidebar({ width = 260 }: SidebarProps) {
+export default function Sidebar({ width = SIDEBAR_WIDTH }: SidebarProps) {
+  const theme = useTheme()
+  const isSm = useMediaQuery('(max-width:600px)')
+  const { sidebarOpen, setSidebarOpen } = useAppContext()
+
   return (
-    <Box
-      component='aside'
+    <Drawer
+      variant={isSm ? 'temporary' : 'persistent'}
+      anchor='left'
+      open={sidebarOpen}
+      onClose={() => setSidebarOpen(false)}
       sx={{
-        position: 'sticky',
-        top: 0,
-        height: '100dvh',
-        width,
-        bgcolor: 'var(--color-sidebar-bg)',
-        borderRight: '1px solid var(--color-border)',
-        px: 2,
-        py: 0,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 2,
-        overflow: 'hidden'
+        '& .MuiDrawer-paper': {
+          bgcolor: 'var(--color-sidebar-bg)',
+          color: 'text.primary',
+          backgroundImage: 'none',
+          boxShadow: 'none'
+        }
       }}
+      slotProps={{
+        transition: {
+          appear: false,
+          easing: { enter: theme.transitions.easing.easeOut, exit: theme.transitions.easing.sharp },
+          timeout: {
+            enter: theme.transitions.duration.enteringScreen,
+            exit: Math.min(120, theme.transitions.duration.leavingScreen)
+          }
+        },
+        backdrop: {
+          sx: {
+            backgroundColor: (theme) => alpha(theme.palette.background.default, 0.72)
+          }
+        },
+        paper: {
+          component: 'aside',
+          elevation: 0,
+          square: true,
+          sx: {
+            width,
+            bgcolor: 'var(--color-sidebar-bg)',
+            color: 'text.primary',
+            backgroundImage: 'none',
+            borderRight: '1px solid var(--color-border)',
+            boxSizing: 'border-box',
+            px: 2,
+            py: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+            height: '100dvh',
+            overflow: 'hidden',
+            boxShadow: 'none',
+            willChange: 'transform',
+            transform: 'translateZ(0)',
+            backfaceVisibility: 'hidden'
+          }
+        }
+      }}
+      ModalProps={{ keepMounted: true }}
     >
       <Box
         aria-label='Application brand'
@@ -217,6 +263,6 @@ export default function Sidebar({ width = 260 }: SidebarProps) {
           </IconButton>
         </Box>
       </Box>
-    </Box>
+    </Drawer>
   )
 }

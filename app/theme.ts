@@ -1,5 +1,7 @@
 import { createTheme } from '@mui/material/styles'
 
+export const SIDEBAR_WIDTH = 256
+
 const theme = createTheme({
   typography: {
     fontFamily: 'Inter, sans-serif'
@@ -35,6 +37,23 @@ const theme = createTheme({
           '--color-sidebar-bg': '#0b0e14',
           '--color-navbar-bg': '#0b0e14',
           '--color-border': '#333c4d'
+        },
+        html: {
+          scrollbarWidth: 'auto',
+          scrollbarColor: '#a7b0c299 transparent'
+        },
+        '*::-webkit-scrollbar': {
+          height: 10,
+          width: 10
+        },
+        '*::-webkit-scrollbar-thumb': {
+          backgroundColor: 'rgba(255,255,255,0.32)',
+          borderRadius: 9999,
+          border: '2px solid transparent',
+          backgroundClip: 'content-box'
+        },
+        '*::-webkit-scrollbar-track': {
+          backgroundColor: 'transparent'
         }
       }
     }

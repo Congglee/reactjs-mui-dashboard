@@ -13,5 +13,9 @@ export default defineConfig({
   },
   preview: {
     port: 3000
+  },
+  ssr: {
+    // Ensure MUI X packages are transformed by Vite during SSR so their CSS imports work
+    noExternal: ['@mui/x-data-grid', '@mui/x-charts', '@mui/x-date-pickers', '@mui/x-tree-view']
   }
 })

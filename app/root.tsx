@@ -4,6 +4,7 @@ import type { Route } from './+types/root'
 import '@/app.css'
 import theme from '@/theme'
 import CssBaseline from '@mui/material/CssBaseline'
+import AppProvider from '@/providers/app-provider'
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -40,7 +41,9 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Outlet />
+      <AppProvider>
+        <Outlet />
+      </AppProvider>
     </ThemeProvider>
   )
 }

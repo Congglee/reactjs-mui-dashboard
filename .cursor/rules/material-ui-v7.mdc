@@ -77,6 +77,73 @@ function CustomIcon(props) {
 - Don’t: Add or use any non‑MUI UI libraries.
 - Don’t: Import `StyledEngineProvider` from `@mui/material`.
 
+## Grid — Material‑UI v7 (current API)
+
+- Import the stable component:
+
+```tsx
+import Grid from '@mui/material/Grid'
+```
+
+- Key changes in v7:
+  - The sizing props `xs`/`sm`/`md`/`lg`/`xl` were replaced by a single `size` prop.
+  - The `item` prop is no longer used. A `Grid` is always an item; use `container` to turn it into a container.
+  - Use `spacing`, `rowSpacing`, and `columnSpacing` for gaps; use `columns` to change the 12‑column default; use `offset` to push items.
+  - Prefer `Stack` inside a `Grid` for vertical stacking; `direction="column"` on `Grid` is not supported.
+
+- Basic usage:
+
+```tsx
+<Grid container spacing={2}>
+  <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+    {/* Item A */}
+  </Grid>
+  <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+    {/* Item B */}
+  </Grid>
+  <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+    {/* Item C */}
+  </Grid>
+  <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+    {/* Item D */}
+  </Grid>
+  {/* Nested grids are allowed */}
+  <Grid container size={12} rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+    <Grid size={6}>{/* Nested 1 */}</Grid>
+    <Grid size={6}>{/* Nested 2 */}</Grid>
+  </Grid>
+```
+
+- Columns and offset:
+
+```tsx
+<Grid container spacing={2} columns={16}>
+  <Grid size={8}>{/* 8/16 */}</Grid>
+  <Grid size={8}>{/* 8/16 */}</Grid>
+</Grid>
+
+<Grid container spacing={3}>
+  <Grid size={{ xs: 6, md: 2 }} offset={{ xs: 3, md: 0 }} />
+  <Grid size={{ xs: 4, md: 2 }} offset={{ md: 'auto' }} />
+</Grid>
+```
+
+- Migration from pre‑v7:
+
+```tsx
+// Before (v5/v6 style)
+<Grid container spacing={2}>
+  <Grid item xs={12} md={6}>...</Grid>
+</Grid>
+
+// After (v7)
+<Grid container spacing={2}>
+  <Grid size={{ xs: 12, md: 6 }}>...</Grid>
+</Grid>
+```
+
+- Docs: see MUI Grid v7 usage and API at https://mui.com/material-ui/react-grid/
+
 ---
 
 References:
