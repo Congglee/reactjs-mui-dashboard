@@ -4,13 +4,11 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 
-export interface BreadcrumbItem {
-  label: string
-  current?: boolean
-}
-
 interface PageHeaderProps {
-  breadcrumbs: BreadcrumbItem[]
+  breadcrumbs: {
+    label: string
+    current?: boolean
+  }[]
 }
 
 export default function PageHeader({ breadcrumbs }: PageHeaderProps) {

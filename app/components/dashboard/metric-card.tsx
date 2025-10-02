@@ -1,10 +1,9 @@
 import type { Trend } from '@/types/trend'
-import { useTheme } from '@mui/material/styles'
+import { useTheme, alpha } from '@mui/material/styles'
 import Paper from '@mui/material/Paper'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import TrendPill from '@/components/dashboard/trend-pill'
-import { alpha } from '@mui/material/styles'
 import { SparkLineChart } from '@mui/x-charts/SparkLineChart'
 import Box from '@mui/material/Box'
 

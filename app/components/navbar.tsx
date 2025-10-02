@@ -31,10 +31,11 @@ export default function Navbar() {
         overflowY: 'hidden',
         WebkitOverflowScrolling: 'touch',
         pb: 0.5,
-        scrollbarGutter: 'stable both-edges', // Prevent layout shift when scrollbar appears
+        scrollbarGutter: 'stable', // Prevent layout shift when scrollbar appears
         flexWrap: 'nowrap',
         whiteSpace: 'nowrap',
-        '& > *': { flexShrink: 0 }
+        '& > *': { flexShrink: 0 },
+        px: 2
       }}
     >
       <IconButton

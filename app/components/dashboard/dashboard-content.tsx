@@ -4,6 +4,7 @@ import DashboardTable from '@/components/dashboard/dashboard-table'
 import MetricCard from '@/components/dashboard/metric-card'
 import PageHeader from '@/components/dashboard/page-header'
 import ProductTree from '@/components/dashboard/product-tree'
+import UsersByCountry from '@/components/dashboard/users-by-country'
 import {
   mockConvSpark,
   mockDownloads,
@@ -15,7 +16,6 @@ import {
   mockUsersSpark
 } from '@/constants/mock-data'
 import Box from '@mui/material/Box'
-import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import Stack from '@mui/material/Stack'
 import { alpha, useTheme } from '@mui/material/styles'
@@ -194,7 +194,7 @@ export default function DashboardContent() {
           <Stack spacing={2} sx={{ height: '100%' }}>
             <ProductTree />
 
-            <Card sx={{ flex: 1 }}>Users by country</Card>
+            <UsersByCountry />
           </Stack>
         </Grid>
       </Grid>

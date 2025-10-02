@@ -16,3 +16,75 @@ export const mockSessionsC = mockSessionsA.map((v) => Math.max(0, Math.round(v *
 export const mockPageViews = [10000, 10500, 8200, 11000, 12500, 8400, 7200]
 
 export const mockDownloads = [2500, 3200, 2800, 4100, 5200, 3000, 2600]
+
+export interface TreeNode {
+  id: string
+  label: string
+  type: 'parent' | 'leaf'
+  dotColor?: 'green' | 'blue'
+  children?: TreeNode[]
+}
+
+export const mockTreeData: TreeNode[] = [
+  {
+    id: 'website',
+    label: 'Website',
+    type: 'parent',
+    children: [
+      { id: 'home', label: 'Home', type: 'leaf', dotColor: 'green' },
+      { id: 'pricing', label: 'Pricing', type: 'leaf', dotColor: 'green' },
+      { id: 'about', label: 'About us', type: 'leaf', dotColor: 'green' },
+      {
+        id: 'blog',
+        label: 'Blog',
+        type: 'parent',
+        children: [
+          { id: 'announcements', label: 'Announcements', type: 'leaf', dotColor: 'blue' },
+          { id: 'april-lookahead', label: 'April lookahead', type: 'leaf', dotColor: 'blue' },
+          { id: 'whats-new', label: "What's new", type: 'leaf', dotColor: 'blue' },
+          { id: 'meet-the-team', label: 'Meet the team', type: 'leaf', dotColor: 'blue' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'store',
+    label: 'Store',
+    type: 'parent',
+    children: [
+      { id: 'all-products', label: 'All products', type: 'leaf', dotColor: 'green' },
+      {
+        id: 'categories',
+        label: 'Categories',
+        type: 'parent',
+        children: [
+          { id: 'gadgets', label: 'Gadgets', type: 'leaf', dotColor: 'blue' },
+          { id: 'phones', label: 'Phones', type: 'leaf', dotColor: 'blue' },
+          { id: 'wearables', label: 'Wearables', type: 'leaf', dotColor: 'blue' }
+        ]
+      },
+      { id: 'bestsellers', label: 'Bestsellers', type: 'leaf', dotColor: 'green' },
+      { id: 'sales', label: 'Sales', type: 'leaf', dotColor: 'green' }
+    ]
+  },
+  { id: 'contact', label: 'Contact', type: 'leaf', dotColor: 'blue' },
+  { id: 'help', label: 'Help', type: 'leaf', dotColor: 'blue' }
+]
+
+export interface CountryData {
+  id: string
+  country: string
+  percentage: number
+  color: string
+  flag: string
+  countryCode?: string // ISO 3166-1 alpha-2 country code
+}
+
+export const mockCountryData: CountryData[] = [
+  { id: 'india', country: 'India', percentage: 50, color: '#7888a5', flag: '🇮🇳', countryCode: 'IN' },
+  { id: 'usa', country: 'USA', percentage: 35, color: '#5d6d88', flag: '🇺🇸', countryCode: 'US' },
+  { id: 'brazil', country: 'Brazil', percentage: 10, color: '#4a5567', flag: '🇧🇷', countryCode: 'BR' },
+  { id: 'other', country: 'Other', percentage: 5, color: '#3a4252', flag: '🌍' }
+]
+
+export const mockTotalUsers = 98500
