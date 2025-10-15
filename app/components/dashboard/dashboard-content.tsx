@@ -2,9 +2,9 @@ import CalloutCard from '@/components/dashboard/callout-card'
 import ChartCard from '@/components/dashboard/chart-card'
 import DashboardTable from '@/components/dashboard/dashboard-table'
 import MetricCard from '@/components/dashboard/metric-card'
-import PageHeader from '@/components/dashboard/page-header'
 import ProductTree from '@/components/dashboard/product-tree'
 import UsersByCountry from '@/components/dashboard/users-by-country'
+import PageHeader from '@/components/page-header'
 import {
   mockConvSpark,
   mockDownloads,
@@ -31,10 +31,10 @@ export default function DashboardContent() {
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-      <PageHeader breadcrumbs={[{ label: 'Dashboard' }, { label: 'Home', current: true }]} />
+    <Box sx={{ display: 'flex', flexDirection: 'column', bgcolor: 'background.default' }}>
+      <PageHeader breadcrumbs={[{ label: 'Dashboard' }, { label: 'Home', current: true }]} showDatePicker={true} />
 
-      <Typography variant='h2' sx={{ fontSize: '1.5rem', fontWeight: 600, lineHeight: 1.6 }}>
+      <Typography variant='h2' sx={{ fontSize: '1.5rem', fontWeight: 600, lineHeight: 1.6, color: 'text.primary' }}>
         Overview
       </Typography>
 
@@ -122,9 +122,9 @@ export default function DashboardContent() {
                   height={320}
                   sx={{
                     '& .MuiChartsLegend-root': { display: 'none' },
-                    '& .MuiChartsAxis-bottom .MuiChartsAxis-tickLabel': { fill: theme.palette.text.secondary },
-                    '& .MuiChartsAxis-left .MuiChartsAxis-tickLabel': { fill: theme.palette.text.secondary },
-                    '& .MuiChartsGrid-line': { stroke: 'rgba(255,255,255,0.08)' }
+                    '& .MuiChartsAxis-bottom .MuiChartsAxis-tickLabel': { fill: 'var(--color-chart-axis)' },
+                    '& .MuiChartsAxis-left .MuiChartsAxis-tickLabel': { fill: 'var(--color-chart-axis)' },
+                    '& .MuiChartsGrid-line': { stroke: 'var(--color-chart-grid)' }
                   }}
                 />
               </ChartCard>
@@ -156,10 +156,10 @@ export default function DashboardContent() {
                   ]}
                   height={320}
                   sx={{
-                    '& .MuiChartsLegend-series tspan': { fill: theme.palette.text.secondary },
-                    '& .MuiChartsAxis-bottom .MuiChartsAxis-tickLabel': { fill: theme.palette.text.secondary },
-                    '& .MuiChartsAxis-left .MuiChartsAxis-tickLabel': { fill: theme.palette.text.secondary },
-                    '& .MuiChartsGrid-line': { stroke: 'rgba(255,255,255,0.08)' },
+                    '& .MuiChartsLegend-series tspan': { fill: 'var(--color-chart-axis)' },
+                    '& .MuiChartsAxis-bottom .MuiChartsAxis-tickLabel': { fill: 'var(--color-chart-axis)' },
+                    '& .MuiChartsAxis-left .MuiChartsAxis-tickLabel': { fill: 'var(--color-chart-axis)' },
+                    '& .MuiChartsGrid-line': { stroke: 'var(--color-chart-grid)' },
                     '& .MuiBarElement-series-downloads': {
                       clipPath: `inset(0 round ${stackedBarRadius}px ${stackedBarRadius}px 0px 0px)`
                     }
@@ -171,7 +171,10 @@ export default function DashboardContent() {
         </Grid>
       </Grid>
 
-      <Typography variant='h2' sx={{ my: 2, fontSize: '1.5rem', fontWeight: 600, lineHeight: 1.6 }}>
+      <Typography
+        variant='h2'
+        sx={{ my: 2, fontSize: '1.5rem', fontWeight: 600, lineHeight: 1.6, color: 'text.primary' }}
+      >
         Details
       </Typography>
 
@@ -180,10 +183,10 @@ export default function DashboardContent() {
           <Box
             sx={{
               width: '100%',
-              border: `1px solid ${theme.palette.divider}`,
+              border: '1px solid var(--color-border)',
               borderRadius: 1,
               overflow: 'hidden',
-              bgcolor: 'background.paper'
+              bgcolor: 'var(--color-surface)'
             }}
           >
             <DashboardTable />
@@ -193,7 +196,6 @@ export default function DashboardContent() {
         <Grid size={{ xs: 12, lg: 3 }} sx={{ minWidth: 0 }}>
           <Stack spacing={2} sx={{ height: '100%' }}>
             <ProductTree />
-
             <UsersByCountry />
           </Stack>
         </Grid>

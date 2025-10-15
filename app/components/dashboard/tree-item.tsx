@@ -4,6 +4,7 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord'
 import Box from '@mui/material/Box'
 import Collapse from '@mui/material/Collapse'
 import Typography from '@mui/material/Typography'
+import { alpha, useTheme } from '@mui/material/styles'
 
 interface TreeItemProps {
   node: TreeNode
@@ -22,6 +23,8 @@ export default function TreeItem({
   expandedIds,
   onToggleExpand
 }: TreeItemProps) {
+  const theme = useTheme()
+
   const isExpanded = expandedIds.has(node.id)
   const isSelected = selectedId === node.id
   const hasChildren = node.children && node.children.length > 0
@@ -34,27 +37,36 @@ export default function TreeItem({
     onSelect(node.id)
   }
 
-  const dotColorMap = { green: '#3ee07f', blue: '#4da6ff' }
+  const dotColorMap = { green: theme.palette.success.main, blue: theme.palette.info.main }
 
   return (
     <>
       <Box
         onClick={handleClick}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 1,
-          py: 0.75,
-          px: 1.5,
-          pl: 1.5 + level * 1.5,
-          borderRadius: 1,
-          cursor: 'pointer',
-          bgcolor: isSelected ? 'rgba(86, 100, 129, 0.4)' : 'transparent',
-          transition: 'background-color 0.15s ease',
-          '&:hover': {
-            bgcolor: isSelected ? 'rgba(86, 100, 129, 0.5)' : 'rgba(86, 100, 129, 0.2)'
-          }
-        }}
+        sx={[
+          {
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+            py: 0.75,
+            px: 1.5,
+            pl: 1.5 + level * 1.5,
+            borderRadius: 1,
+            cursor: 'pointer',
+            bgcolor: isSelected ? alpha(theme.palette.primary.main, 0.08) : 'transparent',
+            transition: 'background-color 0.15s ease',
+            '&:hover': {
+              bgcolor: isSelected ? alpha(theme.palette.primary.main, 0.12) : 'var(--color-hover)'
+            }
+          },
+          (theme) =>
+            theme.applyStyles('dark', {
+              bgcolor: isSelected ? 'var(--color-selected)' : 'transparent',
+              '&:hover': {
+                bgcolor: isSelected ? 'var(--color-focus)' : 'var(--color-hover)'
+              }
+            })
+        ]}
       >
         {isExpandable ? (
           <Box

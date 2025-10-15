@@ -17,6 +17,11 @@ export const mockPageViews = [10000, 10500, 8200, 11000, 12500, 8400, 7200]
 
 export const mockDownloads = [2500, 3200, 2800, 4100, 5200, 3000, 2600]
 
+export interface Trend {
+  value: number
+  direction: 'up' | 'down'
+}
+
 export interface TreeNode {
   id: string
   label: string
@@ -81,10 +86,10 @@ export interface CountryData {
 }
 
 export const mockCountryData: CountryData[] = [
-  { id: 'india', country: 'India', percentage: 50, color: '#7888a5', flag: '🇮🇳', countryCode: 'IN' },
-  { id: 'usa', country: 'USA', percentage: 35, color: '#5d6d88', flag: '🇺🇸', countryCode: 'US' },
-  { id: 'brazil', country: 'Brazil', percentage: 10, color: '#4a5567', flag: '🇧🇷', countryCode: 'BR' },
-  { id: 'other', country: 'Other', percentage: 5, color: '#3a4252', flag: '🌍' }
+  { id: 'india', country: 'India', percentage: 50, color: '#027af2', flag: '🇮🇳', countryCode: 'IN' },
+  { id: 'usa', country: 'USA', percentage: 35, color: '#4da6ff', flag: '🇺🇸', countryCode: 'US' },
+  { id: 'brazil', country: 'Brazil', percentage: 10, color: '#5eaa22', flag: '🇧🇷', countryCode: 'BR' },
+  { id: 'other', country: 'Other', percentage: 5, color: '#94a0b8', flag: '🌍' }
 ]
 
 export const mockTotalUsers = 98500

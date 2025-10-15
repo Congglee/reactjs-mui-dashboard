@@ -1,17 +1,17 @@
+import DatePicker from '@/components/date-picker'
 import Box from '@mui/material/Box'
 import Breadcrumbs from '@mui/material/Breadcrumbs'
 import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 
 interface PageHeaderProps {
   breadcrumbs: {
     label: string
     current?: boolean
   }[]
+  showDatePicker?: boolean
 }
 
-export default function PageHeader({ breadcrumbs }: PageHeaderProps) {
+export default function PageHeader({ breadcrumbs, showDatePicker = false }: PageHeaderProps) {
   return (
     <Box
       sx={{
@@ -37,7 +37,7 @@ export default function PageHeader({ breadcrumbs }: PageHeaderProps) {
               variant={item.current ? 'subtitle2' : 'body2'}
               sx={{
                 fontWeight: item.current ? 700 : 500,
-                color: item.current ? 'text.primary' : 'info.light'
+                color: item.current ? 'text.primary' : 'primary.main'
               }}
               noWrap
             >
@@ -47,29 +47,7 @@ export default function PageHeader({ breadcrumbs }: PageHeaderProps) {
         </Breadcrumbs>
       </Box>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>
-        <Button
-          variant='outlined'
-          size='small'
-          startIcon={<CalendarMonthIcon sx={{ fontSize: 18 }} />}
-          sx={{
-            px: 1.25,
-            height: 36,
-            minHeight: 36,
-            textTransform: 'none',
-            borderRadius: 1.25,
-            borderColor: 'var(--color-border)',
-            color: 'text.primary',
-            bgcolor: 'var(--color-sidebar-bg)',
-            '&:hover': {
-              borderColor: 'divider',
-              bgcolor: 'rgba(255,255,255,0.04)'
-            }
-          }}
-        >
-          Apr 17, 2023
-        </Button>
-      </Box>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>{showDatePicker && <DatePicker />}</Box>
     </Box>
   )
 }

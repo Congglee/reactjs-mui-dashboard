@@ -1,5 +1,5 @@
 import TrendPill from '@/components/dashboard/trend-pill'
-import type { Trend } from '@/types/trend'
+import type { Trend } from '@/constants/mock-data'
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import Stack from '@mui/material/Stack'
@@ -76,22 +76,29 @@ export default function ChartCard({ title, metric, trend, subtitle, children }: 
 
   return (
     <Paper
-      sx={{
-        p: { xs: 1.5, sm: 2 },
-        height: '100%',
-        border: '1px solid var(--color-border)',
-        borderRadius: 1.5,
-        bgcolor: 'background.paper',
-        overflow: 'hidden'
-      }}
+      sx={[
+        {
+          p: { xs: 1.5, sm: 2 },
+          height: '100%',
+          border: '1px solid var(--color-border)',
+          borderRadius: 1.5,
+          bgcolor: 'background.default',
+          overflow: 'hidden',
+          boxShadow: '0 2px 14px rgba(0,0,0,0.06)'
+        },
+        (theme) =>
+          theme.applyStyles('dark', {
+            boxShadow: '0 4px 20px rgba(0,0,0,0.5)'
+          })
+      ]}
     >
       <Stack direction='row' alignItems='center' justifyContent='space-between' gap={1} sx={{ mb: 0.5 }}>
-        <Typography variant='subtitle1' sx={{ fontWeight: 700 }}>
+        <Typography variant='subtitle1' sx={{ fontWeight: 700, color: 'text.primary' }}>
           {title}
         </Typography>
         <TrendPill trend={trend} />
       </Stack>
-      <Typography variant='h5' sx={{ fontWeight: 700, lineHeight: 1.2 }}>
+      <Typography variant='h5' sx={{ fontWeight: 700, lineHeight: 1.2, color: 'text.primary' }}>
         {metric}
       </Typography>
       <Typography variant='caption' color='text.secondary' sx={{ display: 'block', mb: 1.5 }}>
@@ -120,13 +127,25 @@ export default function ChartCard({ title, metric, trend, subtitle, children }: 
           cursor: isDragging ? 'grabbing' : 'grab',
           scrollbarWidth: 'thin',
           '&::-webkit-scrollbar': { height: 8 },
-          '&::-webkit-scrollbar-thumb': {
-            backgroundColor: 'rgba(255,255,255,0.24)',
-            borderRadius: 8
-          },
-          '&:hover::-webkit-scrollbar-thumb': {
-            backgroundColor: 'rgba(255,255,255,0.36)'
-          }
+          '&::-webkit-scrollbar-thumb': [
+            {
+              backgroundColor: 'rgba(148, 160, 184, 0.4)',
+              borderRadius: 8
+            },
+            (theme) =>
+              theme.applyStyles('dark', {
+                backgroundColor: 'rgba(86, 100, 129, 0.6)'
+              })
+          ],
+          '&:hover::-webkit-scrollbar-thumb': [
+            {
+              backgroundColor: 'rgba(148, 160, 184, 0.6)'
+            },
+            (theme) =>
+              theme.applyStyles('dark', {
+                backgroundColor: 'rgba(86, 100, 129, 0.8)'
+              })
+          ]
         }}
       >
         <Box sx={{ minWidth: { xs: 560, sm: 640, md: '100%' } }}>{children}</Box>

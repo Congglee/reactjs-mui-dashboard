@@ -1,6 +1,7 @@
 import TreeItem from '@/components/dashboard/tree-item'
 import { mockTreeData } from '@/constants/mock-data'
 import Box from '@mui/material/Box'
+import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 import { useState } from 'react'
 
@@ -23,13 +24,25 @@ export default function ProductTree() {
   }
 
   return (
-    <Box
-      sx={{
-        bgcolor: '#0b0e14',
-        borderRadius: 2,
-        p: 2,
-        border: '1px solid var(--color-border)'
-      }}
+    <Paper
+      elevation={0}
+      sx={[
+        {
+          bgcolor: 'background.default',
+          borderRadius: 2,
+          p: 2,
+          border: '1px solid var(--color-border)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 1.5,
+          height: '100%',
+          boxShadow: '0 2px 14px rgba(0,0,0,0.06)'
+        },
+        (theme) =>
+          theme.applyStyles('dark', {
+            boxShadow: '0 4px 20px rgba(0,0,0,0.5)'
+          })
+      ]}
     >
       <Typography
         variant='subtitle1'
@@ -55,6 +68,6 @@ export default function ProductTree() {
           />
         ))}
       </Box>
-    </Box>
+    </Paper>
   )
 }

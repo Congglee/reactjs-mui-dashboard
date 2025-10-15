@@ -21,25 +21,38 @@ export default function NavItem({ label, icon: Icon, active = false }: NavItemPr
         px: 1,
         py: 0.75,
         gap: 1,
-        color: active ? (theme) => (theme.palette.mode === 'dark' ? '#f5f6fa' : '#101318') : '#94a0b8',
-        bgcolor: active ? (theme) => (theme.palette.mode === 'dark' ? '#333c4d' : '#f5f6fa') : 'transparent',
+        color: active ? 'text.primary' : 'text.secondary',
+        bgcolor: active ? 'var(--color-selected)' : 'transparent',
         '&:hover': {
-          bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#333c4d99' : '#f5f6fa')
+          bgcolor: active ? 'var(--color-selected)' : 'var(--color-hover)'
         },
         transition: 'background-color .2s ease, color .2s ease'
       }}
     >
       <Box
-        sx={{
-          width: 28,
-          height: 28,
-          borderRadius: 1,
-          display: 'grid',
-          placeItems: 'center',
-          background: active ? 'linear-gradient(135deg, #027af2 0%, #0059b3 100%)' : 'transparent'
-        }}
+        sx={[
+          {
+            width: 28,
+            height: 28,
+            borderRadius: 1,
+            display: 'grid',
+            placeItems: 'center',
+            background: active ? 'linear-gradient(135deg, #027af2 0%, #0059b3 100%)' : 'transparent'
+          },
+          (theme) =>
+            active
+              ? theme.applyStyles('dark', {
+                  background: 'linear-gradient(135deg, #4da6ff 0%, #2a8fff 100%)'
+                })
+              : {}
+        ]}
       >
-        <Icon sx={{ fontSize: 18, color: active ? '#ffffff' : '#94a0b8' }} />
+        <Icon
+          sx={{
+            fontSize: 18,
+            color: active ? '#ffffff' : 'text.disabled'
+          }}
+        />
       </Box>
       <Typography variant='body2' sx={{ fontWeight: active ? 600 : 500, lineHeight: 1.2, letterSpacing: 0.2 }}>
         {label}

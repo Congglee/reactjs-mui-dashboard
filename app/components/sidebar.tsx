@@ -1,7 +1,3 @@
-import NavItem from '@/components/nav-item'
-import { SIDEBAR_WIDTH } from '@/theme'
-import { alpha, useTheme } from '@mui/material/styles'
-import { useAppContext } from '@/providers/app-provider'
 import AnalyticsIcon from '@/components/icons/analytics-icon'
 import HelpIcon from '@/components/icons/help-icon'
 import HomeIcon from '@/components/icons/home-icon'
@@ -9,14 +5,17 @@ import InfoIcon from '@/components/icons/info-icon'
 import SettingsIcon from '@/components/icons/settings-icon'
 import TasksIcon from '@/components/icons/tasks-icon'
 import UsersIcon from '@/components/icons/users-icon'
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
+import NavItem from '@/components/nav-item'
+import ProfileMenu from '@/components/profile-menu'
+import { useAppContext } from '@/providers/app-provider'
+import { SIDEBAR_WIDTH } from '@/theme'
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome'
 import Avatar from '@mui/material/Avatar'
-import IconButton from '@mui/material/IconButton'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 import Drawer from '@mui/material/Drawer'
+import { alpha, useTheme } from '@mui/material/styles'
+import Typography from '@mui/material/Typography'
 import useMediaQuery from '@mui/material/useMediaQuery'
 
 interface SidebarProps {
@@ -26,6 +25,7 @@ interface SidebarProps {
 export default function Sidebar({ width = SIDEBAR_WIDTH }: SidebarProps) {
   const theme = useTheme()
   const isSm = useMediaQuery('(max-width:600px)')
+
   const { sidebarOpen, setSidebarOpen } = useAppContext()
 
   return (
@@ -44,16 +44,21 @@ export default function Sidebar({ width = SIDEBAR_WIDTH }: SidebarProps) {
       }}
       slotProps={{
         transition: {
-          appear: false,
-          easing: { enter: theme.transitions.easing.easeOut, exit: theme.transitions.easing.sharp },
+          appear: true,
+          easing: {
+            enter: 'cubic-bezier(0.4, 0, 0.2, 1)',
+            exit: 'cubic-bezier(0.4, 0, 0.6, 1)'
+          },
           timeout: {
             enter: theme.transitions.duration.enteringScreen,
-            exit: Math.min(120, theme.transitions.duration.leavingScreen)
+            exit: theme.transitions.duration.leavingScreen
           }
         },
         backdrop: {
           sx: {
-            backgroundColor: (theme) => alpha(theme.palette.background.default, 0.72)
+            backgroundColor: (theme) => alpha(theme.palette.background.default, 0.72),
+            backdropFilter: 'blur(2px)',
+            transition: 'opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) !important'
           }
         },
         paper: {
@@ -76,8 +81,11 @@ export default function Sidebar({ width = SIDEBAR_WIDTH }: SidebarProps) {
             overflow: 'hidden',
             boxShadow: 'none',
             willChange: 'transform',
-            transform: 'translateZ(0)',
-            backfaceVisibility: 'hidden'
+            transform: 'translate3d(0, 0, 0)',
+            backfaceVisibility: 'hidden',
+            WebkitFontSmoothing: 'antialiased',
+            contain: 'layout style paint',
+            transition: 'transform 225ms cubic-bezier(0.4, 0, 0.2, 1)'
           }
         }
       }}
@@ -97,28 +105,39 @@ export default function Sidebar({ width = SIDEBAR_WIDTH }: SidebarProps) {
         }}
       >
         <Box
-          sx={{
-            width: 34,
-            height: 34,
-            borderRadius: 1.5,
-            p: '2px',
-            background: 'linear-gradient(135deg, #027AF2 0%, #0059B3 100%)',
-            boxShadow: (theme) =>
-              theme.palette.mode === 'dark' ? '0 6px 18px rgba(0,0,0,0.35)' : '0 6px 18px rgba(0,0,0,0.10)'
-          }}
+          sx={[
+            {
+              width: 34,
+              height: 34,
+              borderRadius: 1.5,
+              p: '2px',
+              background: 'linear-gradient(135deg, #027AF2 0%, #0059B3 100%)',
+              boxShadow: '0 6px 18px rgba(0,0,0,0.10)'
+            },
+            (theme) =>
+              theme.applyStyles('dark', {
+                boxShadow: '0 6px 18px rgba(2,122,242,0.25)'
+              })
+          ]}
         >
           <Box
             component='img'
             src='/favicon.ico'
             alt='App logo'
-            sx={{
-              width: '100%',
-              height: '100%',
-              display: 'block',
-              borderRadius: 1.25,
-              objectFit: 'cover',
-              backgroundColor: (theme) => (theme.palette.mode === 'dark' ? '#0b0e14' : '#ffffff')
-            }}
+            sx={[
+              {
+                width: '100%',
+                height: '100%',
+                display: 'block',
+                borderRadius: 1.25,
+                objectFit: 'cover',
+                backgroundColor: '#ffffff'
+              },
+              (theme) =>
+                theme.applyStyles('dark', {
+                  backgroundColor: '#0b0e14'
+                })
+            ]}
           />
         </Box>
 
@@ -165,15 +184,20 @@ export default function Sidebar({ width = SIDEBAR_WIDTH }: SidebarProps) {
 
           <Box
             aria-label='Plan renew promotion'
-            sx={{
-              p: 2,
-              mt: 1.5,
-              border: '1px solid var(--color-border)',
-              borderRadius: 1.5,
-              bgcolor: 'background.paper',
-              boxShadow: (theme) =>
-                theme.palette.mode === 'dark' ? '0 2px 14px rgba(0,0,0,0.25)' : '0 2px 14px rgba(0,0,0,0.06)'
-            }}
+            sx={[
+              {
+                p: 2,
+                mt: 1.5,
+                border: '1px solid var(--color-border)',
+                borderRadius: 1.5,
+                bgcolor: 'var(--color-card-elevated)',
+                boxShadow: '0 2px 14px rgba(0,0,0,0.06)'
+              },
+              (theme) =>
+                theme.applyStyles('dark', {
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.5)'
+                })
+            ]}
           >
             <Box
               sx={{
@@ -183,15 +207,15 @@ export default function Sidebar({ width = SIDEBAR_WIDTH }: SidebarProps) {
                 width: 28,
                 height: 28,
                 borderRadius: 1.25,
-                bgcolor: 'rgba(77,166,255,0.15)',
-                color: 'info.main',
+                bgcolor: 'var(--color-info-bg)',
+                color: 'var(--color-info)',
                 mb: 1
               }}
             >
               <AutoAwesomeIcon sx={{ fontSize: 18 }} />
             </Box>
 
-            <Typography variant='subtitle2' sx={{ fontWeight: 600, mb: 0.5 }}>
+            <Typography variant='subtitle2' sx={{ fontWeight: 600, mb: 0.5, color: 'text.primary' }}>
               Plan about to expire
             </Typography>
             <Typography variant='body2' color='text.secondary' sx={{ mb: 1.25 }}>
@@ -202,16 +226,22 @@ export default function Sidebar({ width = SIDEBAR_WIDTH }: SidebarProps) {
               fullWidth
               variant='contained'
               disableElevation
-              sx={{
-                textTransform: 'none',
-                fontWeight: 600,
-                borderRadius: 1.25,
-                bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#e7ecf2' : '#f5f7fb'),
-                color: '#0b0e14',
-                '&:hover': {
-                  bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#eef2f6' : '#eef1f6')
-                }
-              }}
+              sx={[
+                {
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  borderRadius: 1.25,
+                  bgcolor: 'primary.main',
+                  color: '#ffffff',
+                  '&:hover': {
+                    bgcolor: 'primary.light'
+                  }
+                },
+                (theme) =>
+                  theme.applyStyles('dark', {
+                    color: '#0b0e14'
+                  })
+              ]}
             >
               Get the discount
             </Button>
@@ -239,28 +269,16 @@ export default function Sidebar({ width = SIDEBAR_WIDTH }: SidebarProps) {
               sx={{ width: 40, height: 40 }}
             />
             <Box sx={{ minWidth: 0 }}>
-              <Typography variant='subtitle2' sx={{ fontWeight: 600, lineHeight: 1.2 }} noWrap>
+              <Typography variant='subtitle2' sx={{ fontWeight: 600, lineHeight: 1.2, color: 'text.primary' }} noWrap>
                 Riley Carter
               </Typography>
-              <Typography variant='body2' color='text.secondary' noWrap>
+              <Typography variant='body2' sx={{ color: 'text.secondary' }} noWrap>
                 riley@email.com
               </Typography>
             </Box>
           </Box>
-          <IconButton
-            aria-label='profile options'
-            size='small'
-            sx={{
-              width: 36,
-              height: 36,
-              borderRadius: 1.25,
-              border: '1px solid var(--color-border)',
-              color: 'text.secondary',
-              '&:hover': { bgcolor: 'rgba(255,255,255,0.04)' }
-            }}
-          >
-            <MoreVertIcon fontSize='small' />
-          </IconButton>
+
+          <ProfileMenu />
         </Box>
       </Box>
     </Drawer>

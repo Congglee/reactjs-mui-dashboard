@@ -4,11 +4,11 @@ import OutlinedInput from '@mui/material/OutlinedInput'
 import InputAdornment from '@mui/material/InputAdornment'
 import IconButton from '@mui/material/IconButton'
 import Badge from '@mui/material/Badge'
-import Avatar from '@mui/material/Avatar'
 import SearchIcon from '@mui/icons-material/Search'
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
 import MenuIcon from '@mui/icons-material/Menu'
 import { useAppContext } from '@/providers/app-provider'
+import ThemeMenu from '@/components/theme-menu'
 
 export default function Navbar() {
   const { sidebarOpen, setSidebarOpen } = useAppContext()
@@ -31,7 +31,7 @@ export default function Navbar() {
         overflowY: 'hidden',
         WebkitOverflowScrolling: 'touch',
         pb: 0.5,
-        scrollbarGutter: 'stable', // Prevent layout shift when scrollbar appears
+        scrollbarGutter: 'stable',
         flexWrap: 'nowrap',
         whiteSpace: 'nowrap',
         '& > *': { flexShrink: 0 },
@@ -47,8 +47,8 @@ export default function Navbar() {
           borderRadius: 1.25,
           border: '1px solid var(--color-border)',
           color: 'text.secondary',
-          bgcolor: 'var(--color-sidebar-bg)',
-          '&:hover': { bgcolor: 'rgba(255,255,255,0.04)' }
+          bgcolor: 'var(--color-surface)',
+          '&:hover': { bgcolor: 'var(--color-hover)' }
         }}
       >
         <MenuIcon sx={{ fontSize: 20 }} />
@@ -72,15 +72,15 @@ export default function Navbar() {
             width: { xs: 160, sm: 220, md: 320 },
             height: 36,
             borderRadius: 1.25,
-            bgcolor: 'var(--color-sidebar-bg)',
+            bgcolor: 'var(--color-surface)',
             color: 'text.primary',
             '& .MuiOutlinedInput-input': {
               py: 0.75
             },
             '& input::placeholder': { color: 'text.secondary', opacity: 1 },
             '& .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--color-border)' },
-            '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'divider' },
-            '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'info.main' }
+            '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--color-border-strong)' },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'primary.main', borderWidth: 2 }
           }}
           startAdornment={
             <InputAdornment position='start'>
@@ -97,8 +97,10 @@ export default function Navbar() {
             borderRadius: 1.25,
             border: '1px solid var(--color-border)',
             color: 'text.secondary',
-            bgcolor: 'var(--color-sidebar-bg)',
-            '&:hover': { bgcolor: 'rgba(255,255,255,0.04)' }
+            bgcolor: 'var(--color-hover)',
+            '&:hover': {
+              bgcolor: 'var(--color-active)'
+            }
           }}
         >
           <Badge
@@ -118,11 +120,7 @@ export default function Navbar() {
           </Badge>
         </IconButton>
 
-        <Avatar
-          alt='John Doe'
-          src='https://i.pravatar.cc/40?img=3'
-          sx={{ width: 36, height: 36, borderRadius: 1.25, border: '1px solid var(--color-border)' }}
-        />
+        <ThemeMenu />
       </Stack>
     </Box>
   )

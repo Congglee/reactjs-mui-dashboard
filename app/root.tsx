@@ -4,7 +4,10 @@ import type { Route } from './+types/root'
 import '@/app.css'
 import theme from '@/theme'
 import CssBaseline from '@mui/material/CssBaseline'
+import InitColorSchemeScript from '@mui/material/InitColorSchemeScript'
 import AppProvider from '@/providers/app-provider'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -25,6 +28,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
+        <InitColorSchemeScript attribute='class' />
         <Meta />
         <Links />
       </head>
@@ -41,9 +45,11 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AppProvider>
-        <Outlet />
-      </AppProvider>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <AppProvider>
+          <Outlet />
+        </AppProvider>
+      </LocalizationProvider>
     </ThemeProvider>
   )
 }

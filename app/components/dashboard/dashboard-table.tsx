@@ -3,7 +3,7 @@ import Chip from '@mui/material/Chip'
 import Divider from '@mui/material/Divider'
 import Skeleton from '@mui/material/Skeleton'
 import Stack from '@mui/material/Stack'
-import { alpha, useTheme } from '@mui/material/styles'
+import { useTheme } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 import type { GridColDef } from '@mui/x-data-grid'
 import { DataGrid } from '@mui/x-data-grid'
@@ -131,15 +131,9 @@ export default function DashboardTable() {
               fontSize: '0.75rem',
               borderRadius: 999,
               px: 0.75,
-              bgcolor:
-                params.value === 'Online'
-                  ? alpha(theme.palette.success.main, 0.16)
-                  : alpha(theme.palette.action.disabled, 0.12),
-              color: params.value === 'Online' ? theme.palette.success.light : theme.palette.text.secondary,
-              border: `1px solid ${alpha(
-                params.value === 'Online' ? theme.palette.success.main : theme.palette.divider,
-                0.6
-              )}`
+              bgcolor: params.value === 'Online' ? 'var(--color-success-bg)' : 'var(--color-flag-bg)',
+              color: params.value === 'Online' ? 'var(--color-success)' : 'text.secondary',
+              border: `1px solid ${params.value === 'Online' ? 'var(--color-success-border)' : 'var(--color-flag-border)'}`
             }}
           />
         )
@@ -258,7 +252,7 @@ export default function DashboardTable() {
             gap: 2,
             px: 2,
             py: 1.25,
-            borderTop: i === 0 ? 'none' : `1px solid ${theme.palette.divider}`
+            borderTop: i === 0 ? 'none' : '1px solid var(--color-border)'
           }}
         >
           <Skeleton variant='rounded' width={16} height={16} sx={{ borderRadius: 0.5 }} />
@@ -315,14 +309,14 @@ export default function DashboardTable() {
         '& .MuiDataGrid-columnHeaders': {
           bgcolor: 'transparent',
           color: 'text.secondary',
-          borderBottom: `1px solid ${theme.palette.divider}`,
+          borderBottom: '1px solid var(--color-border)',
           fontSize: '0.875rem'
         },
         '& .MuiDataGrid-columnHeaderTitle': {
           fontWeight: 600
         },
         '& .MuiDataGrid-cell': {
-          borderColor: theme.palette.divider,
+          borderColor: 'var(--color-border)',
           color: 'text.primary',
           fontSize: '0.875rem',
           display: 'flex',
@@ -330,13 +324,19 @@ export default function DashboardTable() {
           py: 0
         },
         '& .MuiDataGrid-row:hover': {
-          bgcolor: alpha(theme.palette.primary.main, 0.06)
+          bgcolor: 'var(--color-hover)'
+        },
+        '& .MuiDataGrid-row.Mui-selected': {
+          bgcolor: 'var(--color-selected)',
+          '&:hover': {
+            bgcolor: 'var(--color-focus)'
+          }
         },
         '& .MuiDataGrid-selectedRowCount': {
           color: 'text.secondary'
         },
         '& .MuiDataGrid-footerContainer': {
-          borderTop: `1px solid ${theme.palette.divider}`,
+          borderTop: '1px solid var(--color-border)',
           color: 'text.secondary',
           px: 1,
           bgcolor: 'transparent'

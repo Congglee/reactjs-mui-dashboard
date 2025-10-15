@@ -2,13 +2,17 @@ import { mockCountryData, mockTotalUsers } from '@/constants/mock-data'
 import PublicIcon from '@mui/icons-material/Public'
 import Box from '@mui/material/Box'
 import LinearProgress from '@mui/material/LinearProgress'
+import Paper from '@mui/material/Paper'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
+import { alpha, useTheme } from '@mui/material/styles'
 import { chartsTooltipClasses } from '@mui/x-charts'
 import { PieChart } from '@mui/x-charts/PieChart'
 import * as FlagIcons from 'country-flag-icons/react/1x1'
 
 export default function UsersByCountry() {
+  const theme = useTheme()
+
   const chartData = mockCountryData.map((item, index) => ({
     id: index,
     value: item.percentage,
@@ -25,7 +29,7 @@ export default function UsersByCountry() {
         <PublicIcon
           sx={{
             fontSize: '1.5rem',
-            color: country === 'Other' ? '#4ade80' : 'text.secondary'
+            color: country === 'Other' ? theme.palette.success.main : theme.palette.text.secondary
           }}
         />
       )
@@ -38,7 +42,7 @@ export default function UsersByCountry() {
         <PublicIcon
           sx={{
             fontSize: '1.5rem',
-            color: country === 'Other' ? '#4ade80' : 'text.secondary'
+            color: country === 'Other' ? theme.palette.success.main : theme.palette.text.secondary
           }}
         />
       )
@@ -58,16 +62,25 @@ export default function UsersByCountry() {
   }
 
   return (
-    <Box
-      sx={{
-        bgcolor: '#0b0e14',
-        borderRadius: 2,
-        p: 2,
-        border: '1px solid var(--color-border)',
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column'
-      }}
+    <Paper
+      elevation={0}
+      sx={[
+        {
+          bgcolor: 'background.default',
+          borderRadius: 2,
+          p: 2,
+          border: '1px solid var(--color-border)',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 1.5,
+          boxShadow: '0 2px 14px rgba(0,0,0,0.06)'
+        },
+        (theme) =>
+          theme.applyStyles('dark', {
+            boxShadow: '0 4px 20px rgba(0,0,0,0.5)'
+          })
+      ]}
     >
       <Typography
         variant='subtitle1'
@@ -116,33 +129,63 @@ export default function UsersByCountry() {
           slotProps={{
             tooltip: {
               trigger: 'item',
-              sx: {
-                [`& .${chartsTooltipClasses.table}`]: {
-                  borderSpacing: 0
+              sx: [
+                {
+                  [`& .${chartsTooltipClasses.root}`]: {
+                    bgcolor: 'rgba(255, 255, 255, 0.98)',
+                    border: '1px solid rgba(218, 222, 231, 0.85)',
+                    color: '#101318',
+                    boxShadow: '0 8px 18px rgba(0, 0, 0, 0.12)',
+                    borderRadius: 8,
+                    backdropFilter: 'blur(8px)'
+                  },
+                  [`& .${chartsTooltipClasses.table}`]: {
+                    borderSpacing: 0
+                  },
+                  [`& .${chartsTooltipClasses.mark}`]: {
+                    width: '10px',
+                    height: '10px',
+                    borderRadius: '50%',
+                    marginRight: '10px'
+                  },
+                  [`& .${chartsTooltipClasses.cell}`]: {
+                    padding: 0,
+                    fontSize: '0.875rem',
+                    fontWeight: 500,
+                    color: '#101318'
+                  },
+                  [`& .${chartsTooltipClasses.labelCell}`]: {
+                    fontSize: '0.875rem',
+                    fontWeight: 500,
+                    paddingRight: '12px'
+                  },
+                  [`& .${chartsTooltipClasses.valueCell}`]: {
+                    fontSize: '0.875rem',
+                    fontWeight: 600,
+                    textAlign: 'right'
+                  }
                 },
-                [`& .${chartsTooltipClasses.mark}`]: {
-                  width: '10px',
-                  height: '10px',
-                  borderRadius: '50%',
-                  marginRight: '10px'
-                },
-                [`& .${chartsTooltipClasses.cell}`]: {
-                  padding: 0,
-                  fontSize: '0.875rem',
-                  fontWeight: 500,
-                  color: '#f5f6fa'
-                },
-                [`& .${chartsTooltipClasses.labelCell}`]: {
-                  fontSize: '0.875rem',
-                  fontWeight: 500,
-                  paddingRight: '12px'
-                },
-                [`& .${chartsTooltipClasses.valueCell}`]: {
-                  fontSize: '0.875rem',
-                  fontWeight: 600,
-                  textAlign: 'right'
-                }
-              }
+                (theme) =>
+                  theme.applyStyles('dark', {
+                    [`& .${chartsTooltipClasses.root}`]: {
+                      bgcolor: 'rgba(17, 21, 30, 0.95)',
+                      border: '1px solid rgba(77, 166, 255, 0.25)',
+                      color: '#ffffff',
+                      boxShadow: '0 12px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(77, 166, 255, 0.1)',
+                      backdropFilter: 'blur(12px)'
+                    },
+                    [`& .${chartsTooltipClasses.cell}`]: {
+                      color: '#e8eaed'
+                    },
+                    [`& .${chartsTooltipClasses.labelCell}`]: {
+                      color: '#a8b1c4'
+                    },
+                    [`& .${chartsTooltipClasses.valueCell}`]: {
+                      color: '#ffffff',
+                      fontWeight: 700
+                    }
+                  })
+              ]
             }
           }}
           sx={{
@@ -151,6 +194,9 @@ export default function UsersByCountry() {
             },
             '& .MuiChartsLegend-root': {
               display: 'none'
+            },
+            '& .MuiChartsGrid-line': {
+              stroke: 'var(--color-chart-grid)'
             }
           }}
         />
@@ -203,8 +249,8 @@ export default function UsersByCountry() {
                     justifyContent: 'center',
                     fontSize: '1rem',
                     flexShrink: 0,
-                    bgcolor: 'rgba(255,255,255,0.05)',
-                    border: '1px solid rgba(255,255,255,0.1)',
+                    bgcolor: 'var(--color-flag-bg)',
+                    border: `1px solid var(--color-flag-border)`,
                     overflow: 'hidden'
                   }}
                 >
@@ -235,19 +281,25 @@ export default function UsersByCountry() {
             <LinearProgress
               variant='determinate'
               value={item.percentage}
-              sx={{
-                height: 6,
-                borderRadius: 999,
-                bgcolor: 'rgba(120, 136, 165, 0.15)',
-                '& .MuiLinearProgress-bar': {
-                  bgcolor: item.color,
-                  borderRadius: 999
-                }
-              }}
+              sx={[
+                {
+                  height: 6,
+                  borderRadius: 999,
+                  bgcolor: alpha(theme.palette.action.disabled, 0.18),
+                  '& .MuiLinearProgress-bar': {
+                    bgcolor: item.color,
+                    borderRadius: 999
+                  }
+                },
+                (theme) =>
+                  theme.applyStyles('dark', {
+                    bgcolor: 'var(--color-flag-bg)'
+                  })
+              ]}
             />
           </Box>
         ))}
       </Stack>
-    </Box>
+    </Paper>
   )
 }

@@ -155,6 +155,72 @@ function CustomIcon(props) {
 - When multiple color schemes are enabled, prefer CSS variables via `theme.vars.*`. If runtime light/dark calculations are needed, apply `theme.applyStyles` accordingly.
 - Import `StyledEngineProvider` from `@mui/material/styles` (do not import from `@mui/material`).
 
+### Dark mode handling and SSR flicker (REQUIRED)
+
+- This app previously experienced "dark mode flicker" on SSR. Follow MUI's official guidance to prevent it: use CSS variables and the initialization script. References: https://mui.com/material-ui/customization/dark-mode/#dark-mode-flicker and https://mui.com/material-ui/customization/css-theme-variables/configuration/#preventing-ssr-flickering
+- Do not check `theme.palette.mode` to branch styles or logic. Avoid patterns like `theme.palette.mode === 'dark'` or ternaries based on `theme.palette.mode`.
+- Required: Use `theme.applyStyles()` to target specific modes. Prefer CSS variables via `colorSchemes` and initialize mode on the server to avoid flicker. Reference: https://mui.com/material-ui/customization/dark-mode/#styling-in-dark-mode
+
+#### Allowed patterns
+
+```tsx
+import Box from '@mui/material/Box'
+import { styled } from '@mui/material/styles'
+
+// Using styled
+const Panel = styled('div')(({ theme }) => [
+  { backgroundColor: theme.palette.background.paper },
+  theme.applyStyles('dark', {
+    backgroundColor: theme.palette.grey[900]
+  })
+])
+
+// Using sx
+function Example() {
+  return (
+    <Box
+      sx={[
+        (theme) => ({ color: theme.palette.text.primary }),
+        (theme) =>
+          theme.applyStyles('dark', {
+            color: theme.palette.secondary.main
+          })
+      ]}
+    />
+  )
+}
+```
+
+#### Disallowed patterns (must migrate)
+
+```tsx
+// Any direct mode checks are disallowed
+const color = theme.palette.mode === 'dark' ? '#fff' : '#000'
+const styles = {
+  backgroundColor: theme.palette.mode === 'dark' ? '#121212' : '#ffffff'
+}
+```
+
+#### SSR anti-flicker basics
+
+```tsx
+import { InitColorSchemeScript, ThemeProvider, createTheme } from '@mui/material/styles'
+
+const theme = createTheme({
+  colorSchemes: {
+    dark: true // enable built-in dark scheme
+  }
+})
+
+// In your document/root HTML
+// <InitColorSchemeScript defaultMode="system" />
+
+// In your app
+// <ThemeProvider theme={theme} defaultMode="system" disableTransitionOnChange>
+```
+
+- Enforcement: If any code uses `theme.palette.mode` (e.g., equality checks, ternaries, or logical branching), raise a warning and propose a concrete refactor using `theme.applyStyles()` as shown above.
+
 ### React 18 and below compatibility
 
 - If the project uses React 18 or below, align `react-is` with the React version to avoid runtime issues (see the v7 guide).
