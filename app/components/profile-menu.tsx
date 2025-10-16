@@ -6,17 +6,53 @@ import IconButton from '@mui/material/IconButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
+import type { PopoverOrigin } from '@mui/material/Popover'
 import { useTheme } from '@mui/material/styles'
-import { useState } from 'react'
+import { useState, type MouseEvent, type ReactNode } from 'react'
 
-export default function ProfileMenu() {
+type ProfileMenuPlacement = 'default' | 'side'
+
+type ProfileMenuTriggerProps = {
+  id: string
+  onClick: (event: MouseEvent<HTMLElement>) => void
+  'aria-haspopup': 'menu'
+  'aria-expanded': 'true' | undefined
+  'aria-controls': string | undefined
+  'aria-label': string
+}
+
+interface ProfileMenuProps {
+  renderTrigger?: (props: ProfileMenuTriggerProps) => ReactNode
+  placement?: ProfileMenuPlacement
+  triggerId?: string
+  menuId?: string
+  ariaLabel?: string
+}
+
+const DEFAULT_TRIGGER_ID = 'profile-options-button'
+const DEFAULT_MENU_ID = 'profile-options-menu'
+const DEFAULT_ARIA_LABEL = 'profile options'
+
+const DEFAULT_ANCHOR_ORIGIN: PopoverOrigin = { vertical: 'bottom', horizontal: 'right' }
+const SIDE_ANCHOR_ORIGIN: PopoverOrigin = { vertical: 'center', horizontal: 'right' }
+
+const DEFAULT_TRANSFORM_ORIGIN: PopoverOrigin = { vertical: 'top', horizontal: 'right' }
+const SIDE_TRANSFORM_ORIGIN: PopoverOrigin = { vertical: 'center', horizontal: 'left' }
+
+export default function ProfileMenu({
+  renderTrigger,
+  placement = 'default',
+  triggerId = DEFAULT_TRIGGER_ID,
+  menuId = DEFAULT_MENU_ID,
+  ariaLabel = DEFAULT_ARIA_LABEL
+}: ProfileMenuProps = {}) {
   const theme = useTheme()
 
   const [profileMenuAnchorEl, setProfileMenuAnchorEl] = useState<null | HTMLElement>(null)
 
   const isProfileMenuOpen = Boolean(profileMenuAnchorEl)
 
-  const handleOpenProfileMenu = (event: React.MouseEvent<HTMLElement>) => {
+  const handleOpenProfileMenu = (event: MouseEvent<HTMLElement>) => {
     setProfileMenuAnchorEl(event.currentTarget)
   }
 
@@ -24,32 +60,45 @@ export default function ProfileMenu() {
     setProfileMenuAnchorEl(null)
   }
 
+  const anchorOrigin = placement === 'side' ? SIDE_ANCHOR_ORIGIN : DEFAULT_ANCHOR_ORIGIN
+  const transformOrigin = placement === 'side' ? SIDE_TRANSFORM_ORIGIN : DEFAULT_TRANSFORM_ORIGIN
+
+  const triggerProps: ProfileMenuTriggerProps = {
+    id: triggerId,
+    onClick: handleOpenProfileMenu,
+    'aria-haspopup': 'menu',
+    'aria-expanded': isProfileMenuOpen ? 'true' : undefined,
+    'aria-controls': isProfileMenuOpen ? menuId : undefined,
+    'aria-label': ariaLabel
+  }
+
+  const triggerNode = renderTrigger ? (
+    renderTrigger(triggerProps)
+  ) : (
+    <IconButton
+      {...triggerProps}
+      size='small'
+      sx={{
+        width: 36,
+        height: 36,
+        borderRadius: 1.25,
+        border: '1px solid var(--color-border)',
+        color: 'text.secondary',
+        '&:hover': {
+          bgcolor: 'var(--color-hover)'
+        }
+      }}
+    >
+      <MoreVertIcon fontSize='small' />
+    </IconButton>
+  )
+
   return (
     <>
-      <IconButton
-        id='profile-options-button'
-        aria-label='profile options'
-        size='small'
-        aria-haspopup='menu'
-        aria-controls={isProfileMenuOpen ? 'profile-options-menu' : undefined}
-        aria-expanded={isProfileMenuOpen ? 'true' : undefined}
-        onClick={handleOpenProfileMenu}
-        sx={{
-          width: 36,
-          height: 36,
-          borderRadius: 1.25,
-          border: '1px solid var(--color-border)',
-          color: 'text.secondary',
-          '&:hover': {
-            bgcolor: 'var(--color-hover)'
-          }
-        }}
-      >
-        <MoreVertIcon fontSize='small' />
-      </IconButton>
+      {triggerNode}
 
       <Menu
-        id='profile-options-menu'
+        id={menuId}
         anchorEl={profileMenuAnchorEl}
         open={isProfileMenuOpen}
         onClose={handleCloseProfileMenu}
@@ -58,20 +107,20 @@ export default function ProfileMenu() {
           enter: theme.transitions.duration.shorter,
           exit: theme.transitions.duration.shortest
         }}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        anchorOrigin={anchorOrigin}
+        transformOrigin={transformOrigin}
         slotProps={{
           paper: {
             elevation: 0,
             sx: [
               {
                 minWidth: 200,
-                mt: 1,
                 borderRadius: 1.5,
                 border: '1px solid var(--color-border)',
                 bgcolor: 'var(--color-card-elevated)',
                 color: 'text.primary',
-                boxShadow: '0 10px 30px rgba(0,0,0,0.12)'
+                boxShadow: '0 10px 30px rgba(0,0,0,0.12)',
+                ...(placement === 'side' ? { ml: 1 } : { mt: 1 })
               },
               (theme) =>
                 theme.applyStyles('dark', {
@@ -80,7 +129,7 @@ export default function ProfileMenu() {
             ]
           },
           list: {
-            'aria-labelledby': 'profile-options-button',
+            'aria-labelledby': triggerId,
             dense: false,
             sx: {
               py: 0.5,

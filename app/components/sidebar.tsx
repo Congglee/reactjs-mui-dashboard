@@ -10,9 +10,10 @@ import ProfileMenu from '@/components/profile-menu'
 import { useAppContext } from '@/providers/app-provider'
 import { SIDEBAR_COLLAPSED_WIDTH, SIDEBAR_WIDTH } from '@/theme'
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome'
-import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
+import ButtonBase from '@mui/material/ButtonBase'
+import Avatar from '@mui/material/Avatar'
 import Drawer from '@mui/material/Drawer'
 import Tooltip from '@mui/material/Tooltip'
 import { alpha, useTheme } from '@mui/material/styles'
@@ -318,10 +319,49 @@ export default function Sidebar({ width = SIDEBAR_WIDTH }: SidebarProps) {
       >
         {isCollapsed ? (
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Avatar
-              alt='Riley Carter'
-              src='https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&fit=crop&crop=faces&w=160&h=160&auto=format'
-              sx={{ width: 40, height: 40 }}
+            <ProfileMenu
+              placement='side'
+              triggerId='sidebar-profile-avatar-button'
+              menuId='sidebar-profile-menu'
+              ariaLabel='Open profile menu'
+              renderTrigger={(triggerProps) => (
+                <ButtonBase
+                  {...triggerProps}
+                  disableRipple
+                  sx={[
+                    {
+                      width: 40,
+                      height: 40,
+                      borderRadius: '50%',
+                      p: 0,
+                      overflow: 'hidden',
+                      border: '1px solid transparent',
+                      transition:
+                        'border-color 180ms cubic-bezier(0.4, 0, 0.2, 1), transform 180ms cubic-bezier(0.4, 0, 0.2, 1)'
+                    },
+                    (theme) => {
+                      const focusColor = theme.vars?.palette.primary.main ?? theme.palette.primary.main
+
+                      return {
+                        '&:focus-visible': {
+                          outline: `2px solid ${focusColor}`,
+                          outlineOffset: 2
+                        }
+                      }
+                    },
+                    (theme) =>
+                      theme.applyStyles('dark', {
+                        borderColor: theme.palette.primary.light
+                      })
+                  ]}
+                >
+                  <Avatar
+                    alt='Riley Carter'
+                    src='https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&fit=crop&crop=faces&w=160&h=160&auto=format'
+                    sx={{ width: 40, height: 40 }}
+                  />
+                </ButtonBase>
+              )}
             />
           </Box>
         ) : (
