@@ -21,6 +21,8 @@ This is a **React 19 + Material-UI v7 + React Router v7 (Framework Mode)** dashb
 - `app/constants/` - Mock data and constants
 - `app/theme.ts` - Material-UI theme configuration
 
+---
+
 ## Import and Naming Policy (Absolute alias '@/')
 
 This rule standardizes how modules are imported and how component/page files are named across the codebase.

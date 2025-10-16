@@ -1,6 +1,7 @@
 import { createTheme } from '@mui/material/styles'
 
 export const SIDEBAR_WIDTH = 256
+export const SIDEBAR_COLLAPSED_WIDTH = 70
 
 const theme = createTheme({
   cssVariables: {

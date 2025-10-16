@@ -1,6 +1,6 @@
 import Navbar from '@/components/navbar'
 import Sidebar from '@/components/sidebar'
-import { SIDEBAR_WIDTH } from '@/theme'
+import { SIDEBAR_COLLAPSED_WIDTH, SIDEBAR_WIDTH } from '@/theme'
 import Box from '@mui/material/Box'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { Outlet } from 'react-router'
@@ -9,6 +9,8 @@ import { useAppContext } from '@/providers/app-provider'
 export default function DashboardLayout() {
   const { sidebarOpen } = useAppContext()
   const isSm = useMediaQuery('(max-width:600px)')
+
+  const sidebarOffset = isSm ? 0 : sidebarOpen ? SIDEBAR_WIDTH : SIDEBAR_COLLAPSED_WIDTH
 
   return (
     <Box
@@ -28,15 +30,7 @@ export default function DashboardLayout() {
           flexDirection: 'column',
           minWidth: 0,
           minHeight: 0,
-          ml: sidebarOpen && !isSm ? `${SIDEBAR_WIDTH}px` : 0,
-          transition: (theme) =>
-            theme.transitions.create('margin-left', {
-              easing: sidebarOpen ? theme.transitions.easing.easeOut : theme.transitions.easing.sharp,
-              duration: sidebarOpen
-                ? theme.transitions.duration.enteringScreen
-                : theme.transitions.duration.leavingScreen
-            }),
-          willChange: 'margin-left'
+          ml: sidebarOffset ? `${sidebarOffset}px` : 0
         }}
       >
         <Navbar />

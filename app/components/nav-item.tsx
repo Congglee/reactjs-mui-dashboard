@@ -1,6 +1,7 @@
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
 import ButtonBase from '@mui/material/ButtonBase'
+import Box from '@mui/material/Box'
+import Tooltip from '@mui/material/Tooltip'
+import Typography from '@mui/material/Typography'
 import type { ElementType } from 'react'
 import type { SvgIconProps } from '@mui/material/SvgIcon'
 
@@ -8,32 +9,47 @@ export interface NavItemProps {
   label: string
   icon: ElementType<SvgIconProps>
   active?: boolean
+  collapsed?: boolean
 }
 
-export default function NavItem({ label, icon: Icon, active = false }: NavItemProps) {
-  return (
+export default function NavItem({ label, icon: Icon, active = false, collapsed = false }: NavItemProps) {
+  const button = (
     <ButtonBase
       focusRipple
+      aria-label={collapsed ? label : undefined}
       sx={{
-        justifyContent: 'flex-start',
+        justifyContent: collapsed ? 'center' : 'flex-start',
+        alignItems: 'center',
         width: '100%',
         borderRadius: 1.5,
-        px: 1,
+        px: collapsed ? 0 : 1,
         py: 0.75,
-        gap: 1,
+        gap: collapsed ? 0 : 1,
+        minHeight: 44,
         color: active ? 'text.primary' : 'text.secondary',
         bgcolor: active ? 'var(--color-selected)' : 'transparent',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          inset: 0,
+          borderRadius: 'inherit',
+          bgcolor: active ? 'var(--color-selected)' : 'transparent',
+          transition: 'background-color .2s ease',
+          zIndex: 0
+        },
         '&:hover': {
           bgcolor: active ? 'var(--color-selected)' : 'var(--color-hover)'
         },
-        transition: 'background-color .2s ease, color .2s ease'
+        transition: 'background-color .2s ease, color .2s ease',
+        position: 'relative',
+        overflow: 'hidden'
       }}
     >
       <Box
         sx={[
           {
-            width: 28,
-            height: 28,
+            width: collapsed ? 40 : 30,
+            height: collapsed ? 40 : 30,
             borderRadius: 1,
             display: 'grid',
             placeItems: 'center',
@@ -49,14 +65,26 @@ export default function NavItem({ label, icon: Icon, active = false }: NavItemPr
       >
         <Icon
           sx={{
-            fontSize: 18,
+            fontSize: collapsed ? 22 : 18,
             color: active ? '#ffffff' : 'text.disabled'
           }}
         />
       </Box>
-      <Typography variant='body2' sx={{ fontWeight: active ? 600 : 500, lineHeight: 1.2, letterSpacing: 0.2 }}>
-        {label}
-      </Typography>
+      {!collapsed && (
+        <Typography variant='body2' sx={{ fontWeight: active ? 600 : 500, lineHeight: 1.2, letterSpacing: 0.2 }}>
+          {label}
+        </Typography>
+      )}
     </ButtonBase>
+  )
+
+  if (!collapsed) {
+    return button
+  }
+
+  return (
+    <Tooltip title={label} placement='right' enterDelay={200} arrow>
+      {button}
+    </Tooltip>
   )
 }
