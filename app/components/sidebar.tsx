@@ -272,7 +272,7 @@ export default function Sidebar({ width = SIDEBAR_WIDTH }: SidebarProps) {
               <Typography variant='subtitle2' sx={{ fontWeight: 600, lineHeight: 1.2, color: 'text.primary' }} noWrap>
                 Riley Carter
               </Typography>
-              <Typography variant='body2' sx={{ color: 'text.secondary' }} noWrap>
+              <Typography variant='caption' sx={{ color: 'text.secondary' }} noWrap>
                 riley@email.com
               </Typography>
             </Box>

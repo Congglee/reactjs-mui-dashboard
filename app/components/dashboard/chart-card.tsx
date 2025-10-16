@@ -115,38 +115,37 @@ export default function ChartCard({ title, metric, trend, subtitle, children }: 
         onPointerUp={onPointerUpOrLeave}
         onPointerLeave={onPointerUpOrLeave}
         onKeyDown={onKeyDown}
-        sx={{
-          position: 'relative',
-          width: '100%',
-          overflowX: 'auto',
-          overflowY: 'hidden',
-          WebkitOverflowScrolling: 'touch',
-          overscrollBehaviorX: 'contain',
-          touchAction: 'pan-y',
-          scrollBehavior: 'smooth',
-          cursor: isDragging ? 'grabbing' : 'grab',
-          scrollbarWidth: 'thin',
-          '&::-webkit-scrollbar': { height: 8 },
-          '&::-webkit-scrollbar-thumb': [
-            {
+        sx={[
+          {
+            position: 'relative',
+            width: '100%',
+            overflowX: 'auto',
+            overflowY: 'hidden',
+            WebkitOverflowScrolling: 'touch',
+            overscrollBehaviorX: 'contain',
+            touchAction: 'pan-y',
+            scrollBehavior: 'smooth',
+            cursor: isDragging ? 'grabbing' : 'grab',
+            scrollbarWidth: 'thin',
+            '&::-webkit-scrollbar': { height: 8 },
+            '&::-webkit-scrollbar-thumb': {
               backgroundColor: 'rgba(148, 160, 184, 0.4)',
               borderRadius: 8
             },
-            (theme) =>
-              theme.applyStyles('dark', {
-                backgroundColor: 'rgba(86, 100, 129, 0.6)'
-              })
-          ],
-          '&:hover::-webkit-scrollbar-thumb': [
-            {
+            '&:hover::-webkit-scrollbar-thumb': {
               backgroundColor: 'rgba(148, 160, 184, 0.6)'
-            },
-            (theme) =>
-              theme.applyStyles('dark', {
+            }
+          },
+          (theme) =>
+            theme.applyStyles('dark', {
+              '&::-webkit-scrollbar-thumb': {
+                backgroundColor: 'rgba(86, 100, 129, 0.6)'
+              },
+              '&:hover::-webkit-scrollbar-thumb': {
                 backgroundColor: 'rgba(86, 100, 129, 0.8)'
-              })
-          ]
-        }}
+              }
+            })
+        ]}
       >
         <Box sx={{ minWidth: { xs: 560, sm: 640, md: '100%' } }}>{children}</Box>
       </Box>
